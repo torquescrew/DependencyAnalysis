@@ -1,0 +1,32 @@
+
+getStatement
+  ends with ; or {
+
+
+what to care about:
+types
+methods?
+	-might not care?
+	-if we have the class, then checking methods might not matter? 
+	-need to be distinguished from functions
+global functions
+	-like types
+
+types declared and types used
+
+
+line -> statement -> types of statement
+						- type declaration
+						- function declaration
+						- 
+
+
+either ends with ; or recurses with {} and don't care about ,
+
+check for type declaration, check for type usage.
+
+
+Todo:
+- identify type declarations 
+- identify function/method declarations
+- build database of types, declarations for each file
