@@ -1,12 +1,10 @@
 package test.io.utils
 
+// This makes implicit toRichFile active.
 import io.utils.RichFile.toRichFile
-
-// this makes implicit toRichFile active
-
 import java.io.File
-
 import IncludeFunctions._
+
 
 class Depends {
   val root = new File("/Users/tobysuggate/Desktop/LCWM4")

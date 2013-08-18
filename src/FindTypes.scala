@@ -11,55 +11,36 @@ import scala.collection.mutable.ArrayBuffer
  * Time: 1:04 PM
  */
 object FindTypes {
-  val file = new File("/Users/tobysuggate/Documents/Repos/LCMMDev/LabChart/PCDevelop/LabChart/ChartLib/RecordSelectorPane.h")
-  val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.h")
-
   val typeDecKeywords = ("class", "struct", "typedef", "enum", "enum class")
 
   def run() {
-//    parseFile()
-    val code = new ArrayBuffer[String]
+    val mFile = new File("/Users/tobysuggate/Documents/Repos/LCMMDev/LabChart/PCDevelop/LabChart/ChartLib/RecordSelectorPane.h")
+    val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.h")
 
-    getLines(chartdrawer).foreach(line => {
-      val a = line.replace(";", ";\n").replace("{","{\n").split(" +")
-      code += a.mkString(" ")
-    })
+    parseFile(chartdrawer)
+  }
 
-//    println(code.mkString)
+  def parseFile(file: File) {
+    val lines = getLines(file)
+    val code = linesToStatements(lines)
+
     code.mkString.lines.foreach(line => {
       isTypeDeclaration(line.stripPrefix(" "))
     })
-  }
 
-  def parseFile() {
-    codeToStatements(getCode(file)).foreach(s => {
-      isTypeDeclaration(s)
-//      println(s)
-    })
-
-//    println(getCode(file))
-//    println(getLines(file))
-
-//    getLines(file).foreach(line => {
-//      println(line)
-//    })
-
-//    getLines(file).foreach(line => {
-//      println(line)
-//    })
+    println("Num lines: " + code.size)
   }
 
 
   def linesToStatements(lines: Iterator[String]): ArrayBuffer[String] = {
-    val statements = new ArrayBuffer[String]
-//    val statement = new ArrayBuffer[String]
+    val code = new ArrayBuffer[String]
 
     lines.foreach(line => {
       val a = line.replace(";", ";\n").replace("{","{\n").split(" +")
-      statements += a.mkString(" ").stripMargin
+      code += a.mkString(" ")
     })
 
-    statements
+    code
   }
 
 
@@ -70,6 +51,10 @@ object FindTypes {
       println("Yes: " + statement)
       true
     }
+    else if (words.last.contains("{")) {
+      println("Yes: " + statement)
+      true
+    }
     else {
       println("No: " + statement)
       false
@@ -77,30 +62,7 @@ object FindTypes {
   }
 
 
-  def codeToStatements(code: String) = {
-    code.split(Array(';','{','}'))
-  }
-
-
-  def isTerminated(line: String): Boolean = {
-    line.contains(";") || line.contains("{")
-  }
-
-
-  def hasTypeDecKeyword(line: String): Boolean =  {
-    //typeDecKeywords.productIterator.contains(word)
-//    val b = typeDecKeywords.productIterator.contains(line.split(" +").head)
-//
-//    if (b) {
-//      println("Yes: " + line)
-//      true
-//    }
-//    else {
-//      println("No: " + line)
-//      false
-//    }
+  def hasTypeDecKeyword(line: String): Boolean =
     typeDecKeywords.productIterator.contains(line.split(" +").head)
-//    typeDecKeywords.productIterator.exists(word.contains)
-  }
 
 }

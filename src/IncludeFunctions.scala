@@ -20,8 +20,6 @@ object IncludeFunctions {
     line.stripMargin.startsWith("#include")
 
 
-
-
   def getIncludeFileName(line: String): String = {
     if (line.contains('"')) {
       val i = line.indexOf('"') + 1
@@ -36,14 +34,11 @@ object IncludeFunctions {
   }
 
 
-  def getLines(file: File): Iterator[String] =     {
-//    Source.fromFile(file).toString()
-
+  def getLines(file: File): Iterator[String] =
     Source.fromFile(file, "ISO-8859-5").getLines()
-  }
+
 
   def getCode(file: File): String =
     Source.fromFile(file, "ISO-8859-5").mkString
-
 
 }
