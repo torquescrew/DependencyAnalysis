@@ -11,7 +11,12 @@ import scala.collection.mutable.ArrayBuffer
  * Time: 1:04 PM
  */
 object FindTypes {
-  val typeDecKeywords = ("class", "struct", "typedef", "enum", "enum class")
+  val kClass     = "class"
+  val kStruct    = "struct"
+  val kTypedef   = "typedef"
+  val kEnum      = "enum"
+  val kEnumClass = "enum class"
+  val typeDecKeywords = (kClass, kStruct, kTypedef, kEnum, kEnumClass)
 
   def run() {
     val mFile = new File("/Users/tobysuggate/Documents/Repos/LCMMDev/LabChart/PCDevelop/LabChart/ChartLib/RecordSelectorPane.h")
@@ -21,14 +26,41 @@ object FindTypes {
   }
 
   def parseFile(file: File) {
-    val lines = getLines(file)
-    val code = linesToStatements(lines)
+    val code = linesToStatements(getLines(file))
 
     code.mkString.lines.foreach(line => {
-      isTypeDeclaration(line.stripPrefix(" "))
+      if (isTypeDeclaration(line)) {
+        val type_ = getType(line)
+        println(type_ + " from: " + line)
+      }
+      else {
+//        println("No: " + line)
+      }
     })
 
     println("Num lines: " + code.size)
+  }
+
+
+  def words(line: String) = line.split(" +")
+
+
+  def getType(typeDec: String): String = {
+    val t = getType_(words(typeDec).head, typeDec)
+    if ((t.last == ';') || t.last == '{') {
+      t.init
+    }
+    else
+      t
+  }
+
+
+  def getType_(keyword: String, typeDec: String): String = keyword match {
+    case `kClass` => words(typeDec).tail.head
+    case `kStruct` => words(typeDec).tail.head
+    case `kTypedef` => words(typeDec).last
+    case `kEnum` => words(typeDec).tail.head
+    case `kEnumClass` => words(typeDec).tail.head // TODO: enum class is two words!
   }
 
 
@@ -36,29 +68,28 @@ object FindTypes {
     val code = new ArrayBuffer[String]
 
     lines.foreach(line => {
-      val a = line.replace(";", ";\n").replace("{","{\n").split(" +")
-      code += a.mkString(" ")
+      val a = removeComments(line).replace(";", ";\n").replace("{","{\n").split(" +")
+      code += a.mkString(" ").stripPrefix(" ")
     })
 
     code
   }
 
 
+  def removeComments(line: String): String = {
+    val i = line.indexOf("//")
+    if (i >= 0) {
+      line.take(i)
+    }
+    else
+      line
+  }
+
+
   def isTypeDeclaration(statement: String): Boolean = {
     val words = statement.split(" ")
 
-    if (words.size > 2 && hasTypeDecKeyword(statement)) {
-      println("Yes: " + statement)
-      true
-    }
-    else if (words.last.contains("{")) {
-      println("Yes: " + statement)
-      true
-    }
-    else {
-      println("No: " + statement)
-      false
-    }
+    hasTypeDecKeyword(statement) && (words.size > 2 || words.last.contains("{"))
   }
 
 

@@ -1,3 +1,4 @@
+Ideas/Tricks
 
 getStatement
   ends with ; or {
@@ -30,3 +31,9 @@ Todo:
 - identify type declarations 
 - identify function/method declarations
 - build database of types, declarations for each file
+
+Enums:
+- each constant in enum type should be a type/dependency
+- deal with "enum class"
+
+Functions/Methods:
