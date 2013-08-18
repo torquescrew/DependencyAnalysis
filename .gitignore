@@ -4,3 +4,5 @@
 out/production/CppCodeTool/ToDo
 
 .DS_Store
+
+.idea/workspace.xml
