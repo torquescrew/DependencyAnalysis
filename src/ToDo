@@ -32,8 +32,15 @@ Todo:
 - identify function/method declarations
 - build database of types, declarations for each file
 
+build object for each statement(why?) eg:
+    class SimpleDataPane : public DataPane , public SimplePaneChannelAssoc < SimpleDataPane > {
+
+    declaration statement of type class
+
+
 Enums:
 - each constant in enum type should be a type/dependency
 - deal with "enum class"
 
 Functions/Methods:
+- starts with a type
