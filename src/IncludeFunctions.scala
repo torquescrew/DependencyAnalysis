@@ -42,3 +42,8 @@ object IncludeFunctions {
     Source.fromFile(file, "ISO-8859-5").mkString
 
 }
+
+
+object Util {
+//  kKnownTypes =
+}

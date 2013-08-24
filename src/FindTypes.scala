@@ -42,6 +42,11 @@ object FindTypes {
   }
 
 
+  def fileToStatements(file: File): ArrayBuffer[String] = {
+    linesToStatements(getLines(file))
+  }
+
+
   def words(line: String) = line.split(" +")
 
 
@@ -68,8 +73,9 @@ object FindTypes {
     val code = new ArrayBuffer[String]
 
     lines.foreach(line => {
-      val a = removeComments(line).replace(";", ";\n").replace("{","{\n").split(" +")
-      code += a.mkString(" ").stripPrefix(" ")
+      val a = removeComments(line).replace(";", ";\n").replace("{","{\n").split(" +").mkString(" ").stripPrefix(" ")
+//      if (!a.isEmpty)
+        code += a
     })
 
     code
@@ -90,6 +96,11 @@ object FindTypes {
     val words = statement.split(" ")
 
     hasTypeDecKeyword(statement) && (words.size > 2 || words.last.contains("{"))
+  }
+
+
+  def isTypeDeclaration(statement: ArrayBuffer[String]): Boolean = {
+    typeDecKeywords.productIterator.contains(statement.head) && (statement.size > 2 || statement.last == "{")
   }
 
 
