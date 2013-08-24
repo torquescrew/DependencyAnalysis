@@ -70,15 +70,37 @@ object FindTypes {
 
 
   def linesToStatements(lines: Iterator[String]): ArrayBuffer[String] = {
+    codeToStatements(linesToCode(lines))
+  }
+
+
+  def codeToStatements(code: String): ArrayBuffer[String] = {
+    val statements = new ArrayBuffer[String]
+    val statement = new ArrayBuffer[Char]
+
+    code.foreach(c => {
+      if (c.equals(';') || c.equals('{') || c.equals('}')) {
+        statement += c
+        statements += statement.mkString
+        statement.clear()
+      }
+      else {
+        statement += c
+      }
+    })
+
+    statements
+  }
+
+
+  def linesToCode(lines: Iterator[String]): String = {
     val code = new ArrayBuffer[String]
 
     lines.foreach(line => {
-      val a = removeComments(line).replace(";", ";\n").replace("{","{\n").split(" +").mkString(" ").stripPrefix(" ")
-//      if (!a.isEmpty)
-        code += a
+      code += removeComments(line)
     })
 
-    code
+    code.mkString
   }
 
 
