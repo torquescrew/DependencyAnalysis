@@ -9,8 +9,8 @@ import scala.collection.mutable.ArrayBuffer
  * Time: 8:38 PM
  */
 class Statement(line: String) {
-  val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','=',' ')
-  val doubleOps = Array("--","++","->")
+  val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','=',' ','.')
+  val doubleOps = Array("--","++","->","==")
   val mTokens = parseStatement(line)
 
   mTokens.foreach(t => {
@@ -23,37 +23,31 @@ class Statement(line: String) {
   def parseStatement(line: String): ArrayBuffer[String] = {
     val tokens = new ArrayBuffer[String]
     val chars = new ArrayBuffer[Char]
-    val ops = new ArrayBuffer[Char]
-//    var lastWasWhite = false
 
-    line.foreach(c => {
-      if (operators.contains(c)) {
-        if (chars.size > 0) {
-          tokens += chars.mkString.trim
-          chars.clear()
+    var tail = line
+    while (tail.size > 0) {
+      val op = tail.take(2)
+      if (doubleOps.contains(op)) {
+        tokens += chars.mkString
+        chars.clear()
+        tokens += op
+        tail = tail.tail.tail
+      }
+      else if (operators.contains(tail.head)) {
+        tokens += chars.mkString
+        chars.clear()
+        val head = tail.head
+        if (!isWhite(head)) {
+          tokens += head.toString
         }
-        if (!isWhite(c))
-          ops += c
-        if (ops.size == 2) {
-          if (doubleOps.contains(ops)) {
-            tokens += ops.mkString.trim
-          }
-          else {
-            tokens += ops.head.toString.trim
-            tokens += ops.tail.head.toString.trim
-          }
-
-          ops.clear()
-        }
+        tail = tail.tail
       }
       else {
-        if (ops.size == 1) {
-          tokens += ops.mkString.trim
-          ops.clear()
-        }
-        chars += c
+        chars += tail.head
+        tail = tail.tail
       }
-    })
+    }
+
     tokens += chars.mkString
     tokens.filterNot(s => s <= " " || s == "")
   }
