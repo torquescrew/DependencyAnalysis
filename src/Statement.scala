@@ -9,8 +9,8 @@ import scala.collection.mutable.ArrayBuffer
  * Time: 8:38 PM
  */
 class Statement(line: String) {
-  val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','=',' ','.')
-  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**","/=","!=")
+  val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','+','=',' ','.','?')
+  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**","/=","!=","+=","-=","*=")
   val mTokens = parseStatement(line)
 
 
