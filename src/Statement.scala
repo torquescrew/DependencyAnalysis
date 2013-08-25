@@ -13,9 +13,6 @@ class Statement(line: String) {
   val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**","/=","!=")
   val mTokens = parseStatement(line)
 
-  mTokens.foreach(t => {
-    print(t + " ")
-  })
 
   def isWhite(c: Char): Boolean = c <= ' '
 
@@ -57,5 +54,27 @@ class Statement(line: String) {
     tokens.filterNot(s => s <= " " || s == "")
   }
 
+  def isTypeDeclaration: Boolean = {
+    FindTypes.isTypeDeclaration(mTokens)
+  }
 
+
+  /*
+   * TODO: create concept of public and private type declarations
+   */
+  def getDeclaredType: String = mTokens.head match {
+    case "class" => mTokens.tail.head
+    case "struct" => mTokens.tail.head
+    case "typedef" => mTokens.init.last
+    case "enum" => {
+      if (mTokens.tail.head == "class") {
+        mTokens.tail.tail.head
+      }
+      else if (mTokens.tail.head == "{") {
+        "constants in enum" //TODO: enum constant definitions. Exist in this file only?
+      }
+      else
+        mTokens.tail.head
+    }
+  }
 }

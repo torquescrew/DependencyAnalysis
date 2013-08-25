@@ -24,10 +24,11 @@ object FindTypes {
 
     statements.foreach(s => {
       if (!s.isEmpty) {
-        new Statement(s)
-        println()
+        val ns = new Statement(s)
+        if (ns.isTypeDeclaration) {
+          println(ns.getDeclaredType /* + " from: " + s*/)
+        }
       }
-
     })
   }
 
@@ -137,13 +138,14 @@ object FindTypes {
       line
   }
 
+
   def containsMultiLineComment(line: String): Boolean = {
     line.indexOf("/*") >= 0 || line.indexOf("*/") >= 0
   }
 
 
   def isTypeDeclaration(statement: ArrayBuffer[String]): Boolean = {
-    typeDecKeywords.productIterator.contains(statement.head) && (statement.size > 2 || statement.last == "{")
+    !statement.isEmpty && typeDecKeywords.productIterator.contains(statement.head) && (statement.size > 2 || statement.last == "{")
   }
 
 
