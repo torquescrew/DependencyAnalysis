@@ -10,11 +10,11 @@ import scala.collection.mutable.ArrayBuffer
  */
 class Statement(line: String) {
   val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','=',' ','.')
-  val doubleOps = Array("--","++","->","==")
+  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**")
   val mTokens = parseStatement(line)
 
   mTokens.foreach(t => {
-    print(t + " ")
+//    print(t + " ")
   })
 
   def isWhite(c: Char): Boolean = c <= ' '
@@ -23,17 +23,22 @@ class Statement(line: String) {
   def parseStatement(line: String): ArrayBuffer[String] = {
     val tokens = new ArrayBuffer[String]
     val chars = new ArrayBuffer[Char]
+    var insideStr = false
 
     var tail = line
     while (tail.size > 0) {
+      if (tail.head.equals('"')) {
+        insideStr = !insideStr
+      }
+
       val op = tail.take(2)
-      if (doubleOps.contains(op)) {
+      if (!insideStr && doubleOps.contains(op)) {
         tokens += chars.mkString
         chars.clear()
         tokens += op
         tail = tail.tail.tail
       }
-      else if (operators.contains(tail.head)) {
+      else if (!insideStr && operators.contains(tail.head)) {
         tokens += chars.mkString
         chars.clear()
         val head = tail.head
@@ -51,6 +56,9 @@ class Statement(line: String) {
     tokens += chars.mkString
     tokens.filterNot(s => s <= " " || s == "")
   }
+
+
+
 
 
 

@@ -13,20 +13,19 @@ import java.io.File
 object Main extends App {
 
   val file = new File("/Users/tobysuggate/Desktop/LCWM4/Libs/CEF/include/internal/cef_types_wrappers.h")
+  val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.cpp")
 
-  val statements = FindTypes.fileToStatements(file)
-
-  statements.foreach(s => {
-    if (FindTypes.isTypeDeclaration(s)) {
+//  val statements = FindTypes.fileToStatements(file)
+//
+//  statements.foreach(s => {
+////    if (!s.isEmpty) {
 //      new Statement(s)
 //      println()
-    }
-    if (!s.isEmpty) {
-      new Statement(s)
-      println()
-    }
+////    }
+//
+//  })
 
-  })
+  FindTypes.parseFile(chartdrawer)
 
 }
 

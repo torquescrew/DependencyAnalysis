@@ -19,26 +19,38 @@ object FindTypes {
   val typeDecKeywords = (kClass, kStruct, kTypedef, kEnum, kEnumClass)
 
   def run() {
-    val mFile = new File("/Users/tobysuggate/Documents/Repos/LCMMDev/LabChart/PCDevelop/LabChart/ChartLib/RecordSelectorPane.h")
-    val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.h")
-
-    parseFile(chartdrawer)
+//    val mFile = new File("/Users/tobysuggate/Documents/Repos/LCMMDev/LabChart/PCDevelop/LabChart/ChartLib/RecordSelectorPane.h")
+//    val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.cpp")
+//
+//    parseFile(chartdrawer)
   }
 
   def parseFile(file: File) {
-    val code = linesToStatements(getLines(file))
+    val statements = FindTypes.fileToStatements(file)
 
-    code.mkString.lines.foreach(line => {
-      if (isTypeDeclaration(line)) {
-        val type_ = getType(line)
-        println(type_ + " from: " + line)
+    statements.foreach(s => {
+      if (!s.isEmpty) {
+        new Statement(s)
+//        println()
       }
-      else {
-//        println("No: " + line)
-      }
+
     })
+//    val code = linesToStatements(getLines(file))
+//
+//    code.mkString.lines.foreach(line => {
+//      if (isTypeDeclaration(line)) {
+//        val type_ = getType(line)
+//        println(type_ + " from: " + line)
+//      }
+//      else {
+////        println("No: " + line)
+//      }
+//    })
 
-    println("Num lines: " + code.size)
+//    println("Num lines: " + code.size)
+
+
+
   }
 
 
@@ -84,6 +96,11 @@ object FindTypes {
         statements += statement.mkString
         statement.clear()
       }
+      else if (c.equals('#')) {
+        statements += statement.mkString
+        statement.clear()
+        statement += c
+      }
       else {
         statement += c
       }
@@ -98,6 +115,7 @@ object FindTypes {
 
     lines.foreach(line => {
       code += removeComments(line)
+      println(removeComments(line))
     })
 
     code.mkString
@@ -105,7 +123,17 @@ object FindTypes {
 
 
   def removeComments(line: String): String = {
+    var removed = line
+    while(containsMultiLineComment(removed)) {
+      removed = removeMultiLineComments(removed)
+    }
+    removeSingleLineComments(removed)
+  }
+
+
+  def removeSingleLineComments(line: String): String = {
     val i = line.indexOf("//")
+
     if (i >= 0) {
       line.take(i)
     }
@@ -114,10 +142,26 @@ object FindTypes {
   }
 
 
-  def isTypeDeclaration(statement: String): Boolean = {
-    val words = statement.split(" ")
+  def removeMultiLineComments(line: String): String = {
+    val j = line.indexOf("/*")
+    val k = line.indexOf("*/")
+    if (j >= 0) {
+      if (k >= 0) {
+        line.take(j) + line.substring(k+2)
+      }
+      else {
+        line.take(j)
+      }
+    }
+    else if (k >= 0) {
+      line.substring(k+2)
+    }
+    else
+      line
+  }
 
-    hasTypeDecKeyword(statement) && (words.size > 2 || words.last.contains("{"))
+  def containsMultiLineComment(line: String): Boolean = {
+    line.indexOf("/*") >= 0 || line.indexOf("*/") >= 0
   }
 
 
