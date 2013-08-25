@@ -10,11 +10,11 @@ import scala.collection.mutable.ArrayBuffer
  */
 class Statement(line: String) {
   val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','=',' ','.')
-  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**")
+  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**","/=","!=")
   val mTokens = parseStatement(line)
 
   mTokens.foreach(t => {
-//    print(t + " ")
+    print(t + " ")
   })
 
   def isWhite(c: Char): Boolean = c <= ' '
@@ -56,10 +56,6 @@ class Statement(line: String) {
     tokens += chars.mkString
     tokens.filterNot(s => s <= " " || s == "")
   }
-
-
-
-
 
 
 }

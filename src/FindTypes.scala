@@ -18,12 +18,6 @@ object FindTypes {
   val kEnumClass = "enum class"
   val typeDecKeywords = (kClass, kStruct, kTypedef, kEnum, kEnumClass)
 
-  def run() {
-//    val mFile = new File("/Users/tobysuggate/Documents/Repos/LCMMDev/LabChart/PCDevelop/LabChart/ChartLib/RecordSelectorPane.h")
-//    val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.cpp")
-//
-//    parseFile(chartdrawer)
-  }
 
   def parseFile(file: File) {
     val statements = FindTypes.fileToStatements(file)
@@ -31,26 +25,10 @@ object FindTypes {
     statements.foreach(s => {
       if (!s.isEmpty) {
         new Statement(s)
-//        println()
+        println()
       }
 
     })
-//    val code = linesToStatements(getLines(file))
-//
-//    code.mkString.lines.foreach(line => {
-//      if (isTypeDeclaration(line)) {
-//        val type_ = getType(line)
-//        println(type_ + " from: " + line)
-//      }
-//      else {
-////        println("No: " + line)
-//      }
-//    })
-
-//    println("Num lines: " + code.size)
-
-
-
   }
 
 
@@ -115,7 +93,6 @@ object FindTypes {
 
     lines.foreach(line => {
       code += removeComments(line)
-      println(removeComments(line))
     })
 
     code.mkString
