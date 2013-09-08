@@ -11,6 +11,7 @@ import java.io.File
  */
 
 object Main extends App {
+  val a = "\"wib\");"
 
   val file = new File("/Users/tobysuggate/Desktop/LCWM4/Libs/CEF/include/internal/cef_types_wrappers.h")
   val chartdrawer = new File("/Users/tobysuggate/Desktop/LCWM4/LabChartEssentials/LabChart/ChartDraw/ChartDrawer.h")

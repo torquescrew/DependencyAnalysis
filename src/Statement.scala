@@ -9,8 +9,9 @@ import scala.collection.mutable.ArrayBuffer
  * Time: 8:38 PM
  */
 class Statement(line: String) {
+  val typeDecKeywords = ("class", "struct", "typedef", "enum", "enum class")
   val operators = Array(':',';','!','<','>','{','}','*','(',')','&',',','-','+','=',' ','.','?')
-  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**","/=","!=","+=","-=","*=")
+  val doubleOps = Array("--","++","->","==","<=",">=","::","&&","||","**","/=","!=","+=","-=","*=","()")
   val mTokens = parseStatement(line)
 
 
@@ -54,8 +55,22 @@ class Statement(line: String) {
     tokens.filterNot(s => s <= " " || s == "")
   }
 
+
+  def printTokens() {
+    mTokens.foreach(t => {
+      print(t + " ")
+    })
+    println()
+  }
+
+
   def isTypeDeclaration: Boolean = {
-    FindTypes.isTypeDeclaration(mTokens)
+    isTypeDeclaration(mTokens)
+  }
+
+
+  def isTypeDeclaration(statement: ArrayBuffer[String]): Boolean = {
+    !statement.isEmpty && typeDecKeywords.productIterator.contains(statement.head) && (statement.size > 2 || statement.last == "{")
   }
 
 
