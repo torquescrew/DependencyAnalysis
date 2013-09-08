@@ -75,7 +75,7 @@ class Statement(line: String) {
 
 
   /*
-   * TODO: create concept of public and private type declarations
+   * TODO: need concept of global and local type declarations
    */
   def getDeclaredType: String = mTokens.head match {
     case "class" => mTokens.tail.head

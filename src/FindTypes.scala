@@ -11,6 +11,8 @@ import scala.collection.mutable.ArrayBuffer
  * Time: 1:04 PM
  */
 object FindTypes {
+//  val wor
+
 
   def parseFile(file: File) {
     val statements = FindTypes.fileToStatements(file)
@@ -57,6 +59,11 @@ object FindTypes {
         statements += statement.mkString
         statement.clear()
         statement += c
+      }
+      else if (c.equals('"') && statement.startsWith("#include ") && statement.size > 11) {
+        statement += c
+        statements += statement.mkString
+        statement.clear()
       }
       else {
         statement += c

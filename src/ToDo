@@ -44,3 +44,10 @@ Enums:
 
 Functions/Methods:
 - starts with a type
+
+goal is to figure out what types, globals are consumed
+
+
+recognise function declaration:
+type word();
+type word(type, ...);
