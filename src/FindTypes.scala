@@ -20,12 +20,28 @@ object FindTypes {
     statements.foreach(s => {
       if (!s.isEmpty) {
         val ns = new Statement(s)
-        ns.printTokens()
-        if (ns.isTypeDeclaration) {
+//        ns.printTokens()
+//        if (ns.isTypeDeclaration) {
 //          println(ns.getDeclaredType /* + " from: " + s*/)
-        }
+//        }
+        printStatement(ns)
       }
     })
+  }
+
+
+  def printStatement(s: Statement) {
+    var all = true
+//    all = false
+
+    if (all) {
+      s.printTokens()
+    }
+    else {
+      if (s.isTypeDeclaration) {
+        println(s.getDeclaredType /* + " from: " + s*/)
+      }
+    }
   }
 
 
